@@ -8,6 +8,8 @@ public:
 	{	
 		for (int i = 0; i < list->size(); i++)
 		{
+			if (i % 100000 == 0)
+            	std::cout << "." << std::flush;
 			for (int j = i - 1; j >= 0; j--)
 			{
 				if (list->at(j + 1) < list->at(j))

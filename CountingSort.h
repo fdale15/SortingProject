@@ -1,45 +1,59 @@
 #include <vector>
+#include <iostream>
 #include <unordered_map>
 
 using namespace std;
 
 class CountingSort
 {
+private:
+  static int GetMin(vector<int>* list)
+  {
+    int result = list->front();
+    for (int i = 0; i < list->size(); i++)
+    {
+      if (list->at(i) < result)
+        result = list->at(i);
+    }
+    return result;
+  }
+
+  static int GetMax(vector<int>* list)
+  {
+    int result = 0;
+
+    return result;
+  }
 public:
   static void Sort(vector<int>* list)
   {
-    unordered_map<int, int> map;
-    int max = 0, min = 0;
-    //Load all numbers into map and find max.
+    int min = list->at(0);
+    int max = list->at(0);
+
+    for (int i = 1; i < list->size(); i++)
+    {
+      if (list->at(i) > max)
+        max = list->at(i);
+      if (list->at(i) < min)
+        min = list->at(i);
+    }
+
+    int* count = new int[max - min + 1]();
+
     for (int i = 0; i < list->size(); i++)
     {
-      //If number exists in map, increment its count.
-      if (map.count(list->at(i)) > 0)
-      {
-        map[list->at(i)]++;
-      }
-      //Number is new, set its count to 1 and check for max.
-      else
-      {
-        map[list->at(i)] = 1;
-
-        if (list->at(i) > max)
-          max = list->at(i);
-        if (list->at(i) < min)
-          min = list->at(i);
-      }
+      count[list->at(i) - min]++;
     }
 
-    //Unload all numbers from map in sequential order.
-    for (int i = min, c = 0; i <= max; i++)
+    for (int i = 0, c = 0; i < (max - min + 1); i++)
     {
-      if (map.count(i) > 0)
+      for (int j = 0; j < count[i]; j++)
       {
-        for (int j = 0; j < map[i]; j++, c++)
-        {
-          list->at(c) = i;
-        }
+        list->at(c) = i + min;
+        c++;
       }
     }
+
+    delete count;
   }
 };

@@ -5,19 +5,24 @@
 class MergeSort
 {
 public:
-	static void Sort(std::vector<int>* list, int start, int end)
+	static void Sort(std::vector<int>* list)
+	{
+		StartSort(list, 0, list->size() - 1);
+	}
+private:
+	static void StartSort(std::vector<int>* list, int start, int end)
 	{
 		if (start == end)
 			return;
 
 		int middle = (start + end)/2;
 
-		Sort(list, start, middle);
-		Sort(list, middle + 1, end);
+		StartSort(list, start, middle);
+		StartSort(list, middle + 1, end);
 
 		Merge(list, start, middle, end);
 	}
-private:
+
 	static void Merge(std::vector<int>* list, int start, int middle, int end)
 	{
 		if (list->size() == 0)

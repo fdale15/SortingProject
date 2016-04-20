@@ -147,24 +147,15 @@ public:
 				//Make sure it satisfies heap.
 				HeapSwap(roots[idx - 1]);
 				SortRoot();
-			}
-			else
-			{
-				if (roots[roots.size() - 1]->order != 1)
-					node->order = 1;
-				roots.push_back(node);
-
-				SortRoot();
+				return;
 			}
 		}
-		else
-		{
-			if (roots[roots.size() - 1]->order != 1)
-				node->order = 1;
-			roots.push_back(node);
 
-			SortRoot();
-		}
+		if (roots[roots.size() - 1]->order != 1)
+			node->order = 1;
+		roots.push_back(node);
+
+		SortRoot();
 	}
 
 	//Dequeues the max element and maintains LeonardoHeap.

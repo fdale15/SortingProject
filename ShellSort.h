@@ -8,20 +8,25 @@ public:
 	{
      int temp, flag = 1;
      int h = list->size();
+     int count = 0;
      while( flag || (h > 1))      // boolean flag (true when not equal to 0)
      {
           flag = 0; // reset flag to 0 to check for future swaps
           h = (h+1) / 2;
-          for (int i = 0; i < (list->size() - h); i++)
+          if (count % 100000 == 0)
+            std::cout << "." << std::flush;
+
+        for (int i = 0; i < (list->size() - h); i++)
         {
-               if (list->at(h + i) < list->at(i))
+              if (list->at(h + i) < list->at(i))
               {
                       temp = list->at(h + i);      // swap positions i+h anh i
                       list->at(h + i) = list->at(i);
                       list->at(i) = temp;
                       flag = 1; 
               }
-         }
+        }
+        count++;
      }
      return;
 	}
