@@ -1,5 +1,6 @@
+#pragma once
+
 #include <chrono>
-#include <iostream>
 
 using namespace std::chrono;
 
@@ -9,22 +10,14 @@ private:
 	static long start_time;
 	static long end_time;
 public:
-	static void Start()
-	{
-		start_time = duration_cast<nanoseconds>(steady_clock::now().time_since_epoch()).count();
-	}
+	//Starts the timer.
+	static void Start();
 
-	static long Stop()
-	{
-		end_time = duration_cast<nanoseconds>(steady_clock::now().time_since_epoch()).count();
-		return (end_time - start_time);
-	}
+	//Returns the duration in nanoseconds.
+	static long Stop();
 
-	static long Time()
-	{
-		return duration_cast<nanoseconds>(steady_clock::now().time_since_epoch()).count();
-	}
+	//Returns the current time in nanoseconds.
+	static long Time();
 };
 
-long Timer::start_time = 0;
-long Timer::end_time = 0;
+

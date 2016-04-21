@@ -1,5 +1,5 @@
-#include <iostream>
-#include <vector>
+#pragma once
+
 #include "DataLoader.h"
 #include "./InsertionSort.h"
 #include "./MergeSort.h"
@@ -10,42 +10,22 @@
 #include "./CountingSort.h"
 #include "./AutoTest.h"
 
-using namespace std;
-
-void Print(vector<int>* list);
-
 int main()
 {
-	AutoTimeTester tester(DataLoader::GetVector("./dataset.txt", 500000));
+	//Init testing class with test data.
+	AutoTimeTester tester(DataLoader::GetVector("./dataset.txt", 5000));
 
-	//Perform Merge Sort.
+	//Add all of the methods to be tested.
 	tester.AddTest("Merge Sort", MergeSort::Sort);
-
-	//Perform Heap Sort.
 	tester.AddTest("Heap Sort", HeapSort::Sort);
-
-	//Perform Quick Sort
 	tester.AddTest("Quick Sort", QuickSort::Sort);
-
 	tester.AddTest("Smooth Sort", SmoothSort::Sort);
-
 	tester.AddTest("Shell Sort", ShellSort::Sort);
-
 	tester.AddTest("Counting Sort", CountingSort::Sort);
-
-	//Perform Insertion Sort.
 	tester.AddTest("Insertion Sort", InsertionSort::Sort);
 
+	//Run the test 5 times.
 	tester.RunTests(5);
 
 	return 0;
-}
-
-void Print(vector<int>* list)
-{
-	for (int i = 0; i < list->size(); i++)
-	{
-		cout << list->at(i) << " ";
-	}
-	cout << endl;
 }

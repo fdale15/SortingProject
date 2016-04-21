@@ -1,33 +1,30 @@
+#pragma once
+
 #include <vector>
-#include <iostream>
 
 class ShellSort 
 {
 public:
 	static void Sort(std::vector<int>* list)
 	{
-     int temp, flag = 1;
+     int flag = 1;
      int h = list->size();
-     int count = 0;
-     while( flag || (h > 1))      // boolean flag (true when not equal to 0)
-     {
-          flag = 0; // reset flag to 0 to check for future swaps
-          h = (h+1) / 2;
-          if (count % 100000 == 0)
-            std::cout << "." << std::flush;
 
+     while (flag || (h > 1))      // boolean flag (true when not equal to 0)
+     {
+        flag = 0; // reset flag to 0 to check for future swaps
+        h = (h+1) / 2;  //get next count of values in between.
+        
         for (int i = 0; i < (list->size() - h); i++)
         {
               if (list->at(h + i) < list->at(i))
               {
-                      temp = list->at(h + i);      // swap positions i+h anh i
+                      int temp = list->at(h + i);      // swap positions i+h and i
                       list->at(h + i) = list->at(i);
                       list->at(i) = temp;
                       flag = 1; 
               }
         }
-        count++;
      }
-     return;
 	}
 };

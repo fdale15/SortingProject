@@ -1,7 +1,6 @@
 #pragma once
 
 #include "HeapUtils.h"
-#include <vector>
 #include <cmath>
 
 using namespace std;

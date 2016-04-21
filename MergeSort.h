@@ -7,19 +7,23 @@ class MergeSort
 public:
 	static void Sort(std::vector<int>* list)
 	{
-		StartSort(list, 0, list->size() - 1);
+		//Starts the sorting from the beginning of the array to the end of the array.
+		SortPiece(list, 0, list->size() - 1);
 	}
 private:
-	static void StartSort(std::vector<int>* list, int start, int end)
+	static void SortPiece(std::vector<int>* list, int start, int end)
 	{
 		if (start == end)
 			return;
 
 		int middle = (start + end)/2;
 
-		StartSort(list, start, middle);
-		StartSort(list, middle + 1, end);
+		//Sorts the left half.
+		SortPiece(list, start, middle);
+		//Sorts the right half.
+		SortPiece(list, middle + 1, end);
 
+		//Merges the two sorted pieces.
 		Merge(list, start, middle, end);
 	}
 
@@ -35,11 +39,15 @@ private:
 		int* left = new int[lcount];
 		int* right = new int[rcount];
 
+		//Loads the two sorted pieces into left and right.
 		for (int i = 0; i < lcount; i++)
 			left[i] = list->at(i + start);
 		for (int i = 0; i < rcount; i++)
 			right[i] = list->at(i + middle + 1);
 
+		//Merges them into one.
+		//Pointer arithmatic is used to walk along the elements of each piece.
+		//This means the next element to merge is always at the 0th index.
 		for (int i = 0; i < total; i++)
 		{
 			if (rcount > 0 && lcount > 0)

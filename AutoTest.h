@@ -1,80 +1,22 @@
+#pragma once
+
 #include <vector>
 #include <iostream>
+#include "Test.h"
 #include "Timer.h"
 #include <fstream>
 #include <string>
+#include <chrono>
 
 using namespace std;
 
-//Test for Auto tester
-class Test
-{
-private:
-	//Name of the test
-	string Name;
-	//Times tested.
-	int Count;
-	//Instructions defining what the test does.
-	void(*_Test)(vector<int>*);
-
-	vector<long> RunTimes;
-
-	long Sum()
-	{
-		long result = 0;
-
-		for (vector<long>::iterator it = RunTimes.begin(); it != RunTimes.end(); ++it)
-		{
-			result += (*it);
-		}
-
-		return result;
-	}
-public:
-		//Name of the test.
-
-	Test(string Name, void(*_Test)(vector<int>*))
-	{
-		this->Name = Name;
-		this->_Test = _Test;
-		Count = 0;
-	}
-
-	//Used to add a running time to a test.
-	void AddTime(long _time)
-	{
-		RunTimes.push_back(_time);
-	}
-
-	//Returns the average of the running times.
-	long GetTimeAvg()
-	{
-		return Sum() / RunTimes.size();
-	}
-
-	void Print(ostream* out)
-	{
-		(*out) << Name << endl;
-		(*out) << "RunTimes: " << Count << endl;
-		(*out) << "Avg Time: " << (float)GetTimeAvg()/1000000000.0f << " sec" << endl << endl;
-	}
-
-	int GetCount()
-	{
-		return Count;
-	}
-
-	string GetName()
-	{
-		return Name;
-	}
-
-	void Run(vector<int>* data)
-	{
-		_Test(data);
-		Count++;
-	}
-};
+/********************************************************************************/
+/*                            AutoTimeTester								    */
+/* ____________________________________________________________________________ */
+/* This class accepts Test objects and automatically runs them a                */
+/* specified number of times. It records the duration of each test              */
+/* and prints the results to the console and to a file in the "Results" folder. */
+/********************************************************************************/
 
 
 //1. Init AutoTimeTester with test data.
@@ -91,80 +33,28 @@ private:
 	vector<int>* data;
 public:
 	//Initializes the tester with the test data.
-	AutoTimeTester(vector<int>* data)
-	{
-		this->data = data;
-	}
+	AutoTimeTester(vector<int>* data);
 
-	~AutoTimeTester()
-	{
-		Tests.clear();
-		delete data;
-	}
+	~AutoTimeTester();
 
 	//Adds a test to be ran.
-	void AddTest(string name, void(*_Test)(vector<int>*))
-	{
-		Tests.push_back(Test(name, _Test));
-	}
+	void AddTest(string name, void(*_Test)(vector<int>*));
 
 	//Runs the tests the specified # of times.
-	void RunTests(int count)
-	{
-		for (int i = 0; i < count; i++)
-		{
-			for (int j = 0; j < Tests.size(); j++)
-			{
-				cout << "Running test: " << Tests[j].GetName() << endl;
-				vector<int>* freshData = new vector<int>(*data);
-				Timer::Start();
-				Tests[j].Run(freshData);
-				Tests[j].AddTime(Timer::Stop());
-				delete freshData;
-				FilePrint(Tests[j]);
-				ConsolePrint(Tests[j]);
-			}
-		}
-		FilePrintAll();
-		ConsolePrintAll();
-	}
+	void RunTests(int count);
 
 	//Prints out all the test statistics to console.
-	void ConsolePrintAll()
-	{
-		PrintResults(&cout);
-	}
+	void ConsolePrintAll();
 
 	//Prints one test statistic to console.
-	void ConsolePrint(Test test)
-	{
-		test.Print(&cout);
-	}
+	void ConsolePrint(Test test);
 
 	//Prints out all the test statistics to file.
-	void FilePrintAll()
-	{
-		ofstream fout("./Results/AllTestResults-" + to_string(Timer::Time()) + ".txt");
-		PrintResults(&fout);
-		fout.close();
-	}
+	void FilePrintAll();
 
 	//Prints one test statistic to file.
-	void FilePrint(Test test)
-	{
-		fstream fout("./Results/" + test.GetName() + "-" + to_string(Timer::Time()) + ".txt", fstream::out);
-		test.Print(&fout);
-		fout.close();
-	}
+	void FilePrint(Test test);
 
-
-	//Prints out all the test statistics.
-	void PrintResults(ostream* out)
-	{
-		for (int i = 0; i < Tests.size(); i++)
-		{
-			if (Tests[i].GetCount() > 0)
-				Tests[i].Print(out);
-		}
-	}
+	//Prints out all the test statistics to specified stream.
+	void PrintResults(ostream* out);
 };
